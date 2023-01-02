@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// @title NFT que defineix les receptes dins el projecte de digitalitzar el sistema de receptres sanitàries 
+// @title Contracte que implementa l'ERC721
 // @author Lluis Sánchez Calm
-// Openzeppelin imports
+
 
 import "@openzeppelin/contracts@4.4.2/token/ERC721/ERC721.sol";
 
@@ -12,6 +12,8 @@ contract PrescriptionNFT is ERC721 {
     ////////////////////////////////
     //      CONSTRUCTOR
     ////////////////////////////////
+
+
     constructor () ERC721("PrescriptionNFT","IMP"){} // IMP = International medicine prescription
 
 
@@ -19,6 +21,7 @@ contract PrescriptionNFT is ERC721 {
     //  STRUCT AND ARRAY
     ////////////////////////////////
 
+    // @dev Struct per a les prescricions mèdiques
     struct Prescription {
         address doctorAddress;
         address patientAddress;
@@ -37,6 +40,8 @@ contract PrescriptionNFT is ERC721 {
     //      FUNCTIONS
     ////////////////////////////////
 
+    // @param direcció del pacient, id, direccio del metge, data de caducitat, IUM i nom
+    // @dev funció per crear la recepta
     function mintPrescription(address _patientAddress, uint _id, address _doctorAddress, string memory _expirationDate, string memory _IUM, string memory _medicineName) public {
         prescriptions.push(Prescription(_doctorAddress, _patientAddress, _expirationDate, _IUM, _id, _medicineName, "dispensed"));
         _safeMint(_patientAddress, _id);
