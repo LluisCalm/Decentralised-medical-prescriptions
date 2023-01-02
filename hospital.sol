@@ -150,6 +150,7 @@ contract Hospital is Ownable {
     // @dev funció per crear un doctor 
     function createDoctor(string memory _name, address _address, uint _membership_number) public onlyOwner {
         doctors.push(Doctor(_name, _address, _membership_number, true));
+        doctors_list[_address] = true;
         addressToDoctor[_address] = _name;
         emit doctorCreated(_address, _name);
     }
@@ -196,7 +197,7 @@ contract Hospital is Ownable {
     }
 
     function deployPharmacyContract() public onlyOwner returns (address){
-        pharmaciesContractAddress = address (new PharmacyContract(hospitalContractAddress, prescriptionContractAddress));
+        pharmaciesContractAddress = address (new PharmacyContract(prescriptionContractAddress));
         return pharmaciesContractAddress;
     }
 
