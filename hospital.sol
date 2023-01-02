@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// @title Contracte que defineix l'hospital i tot el que pot fer dins el projecte de digitalitzar el sistema de receptres sanitàries 
+// @title Contracte per l'hospital
 // @author Lluis Sánchez Calm
+// @notice S'encarrega de gestionar totes les accions del gestor del sistema (l'hospital)
+
 
 import "@openzeppelin/contracts@4.4.2/access/Ownable.sol";
 import "./doctor.sol";
@@ -32,8 +34,7 @@ contract Hospital is Ownable {
     //      CONSTRUCTOR
     ////////////////////////////////
 
-    // @dev al fer el deploy del contracte de metges passem per paràmetre
-    // la direcció del token per poder cridar a la funció mint
+    // @param direcció del contracte ERC721
     constructor(address _address) public {
         hospitalContractAddress = address(this);
         prescriptionContractAddress = _address;
@@ -45,7 +46,7 @@ contract Hospital is Ownable {
     //          STRUCTS
     ////////////////////////////////
 
-    // Struct que defineix els metges
+    // @dev Struct que defineix els metges
     struct Doctor {
         string name;
         address doctor_address;
@@ -53,13 +54,13 @@ contract Hospital is Ownable {
         bool isValue;
     }
 
-    // Struct pels pacients
+    // @dev Struct pels pacients
     struct Patient {
         string name;
         address patientAdress;
     }
 
-    // Struct per a les farmàcies
+    // @dev Struct per a les farmàcies
     struct Pharmacy {
         string name;
         address pharmacy_name;
@@ -70,15 +71,17 @@ contract Hospital is Ownable {
     //          GETTERS
     ////////////////////////////////
 
-    // Enlloc de fer aixo afegir una característica isValue al doctor i mirar aquell valor
+    // @dev comprova si una direcció pertany a un doctor
     function isDoctor (address _address) public returns(bool){
         return doctors_list[_address];
     }  
 
+    // @dev comprova si una direcció pertany a un pacient
     function isPatient (address _address )public returns(bool){
         return patients_list[_address];
     }
 
+    // @dev comprova si una direcció pertany a una farmàcia
     function isPharmacy (address _address) public returns (bool){
         return pharmacy_list[_address];
     }
@@ -126,11 +129,13 @@ contract Hospital is Ownable {
     //          MODIFIERS
     ////////////////////////////////
 
+    // @dev modificador que comprova que la direcció sigui la del contracte de doctors
     modifier onlyFromDoctorContract (address _address) {
         require(_address == doctorsContractAddress);
         _;
     }
 
+    // @dev modificador que comprova que la direcció sigui la del contracte de pacients
     modifier onlyFromPatientContract(address _address) {
         require(_address == patientsContractAddress);
         _;
@@ -141,12 +146,16 @@ contract Hospital is Ownable {
     //          FUNCTIONS
     ////////////////////////////////
 
+    // @param nom, direccio, nombre de col·legiat
+    // @dev funció per crear un doctor 
     function createDoctor(string memory _name, address _address, uint _membership_number) public onlyOwner {
         doctors.push(Doctor(_name, _address, _membership_number, true));
         addressToDoctor[_address] = _name;
         emit doctorCreated(_address, _name);
     }
 
+    // @param nom i direcció
+    // @dev funció per crear un pacient
     function createPatient(string memory _name, address _address) public onlyOwner{
         patients.push(Patient(_name, _address));
         patients_list[_address] = true;
@@ -154,6 +163,8 @@ contract Hospital is Ownable {
         emit patientCreated(_address, _name);
     }
 
+    // @param nom, direcció i nombre de col·legiat
+    // @dev funció per crear una farmàcia
     function createPharmacy(string memory _name, address _address, uint _membership_number) public onlyOwner {
         pharmacies.push(Pharmacy(_name, _address, _membership_number));
         pharmacy_list[_address] = true;
@@ -161,6 +172,8 @@ contract Hospital is Ownable {
         emit pharmacyCreated(_address, _name);
     }
 
+    // @param adreça del pacient i del doctor, data de caducitat, IUM i nom
+    // @dev funció per crear una recepta
     function createPrescription(address _patientAddress, address _doctorAddress, string memory _expirationDate, string memory _IUM, string memory _medicineName) public onlyFromDoctorContract(msg.sender){
         prescriptionNFT.mintPrescription(_patientAddress, id, _doctorAddress, _expirationDate, _IUM, _medicineName);
         prescriptionToDoctor[id] = _doctorAddress;
@@ -168,6 +181,8 @@ contract Hospital is Ownable {
         id++;
     }
 
+    // @param id de la recepta
+    // @dev funció per eliminar la recepta una vegada la té l'hospital
     function deletePrescription(uint _tokenID) public onlyOwner{
         prescriptionNFT.burnNFT(_tokenID);
     }
