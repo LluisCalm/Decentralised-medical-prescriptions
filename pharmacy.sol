@@ -6,8 +6,9 @@ pragma solidity ^0.8.0;
 
 import "./hospital.sol";
 import "./prescription.sol";
+import "@openzeppelin/contracts@4.4.2/access/Ownable.sol";
 
-contract PharmacyContract {
+contract PharmacyContract is Ownable{
 
     ////////////////////////////////
     //      CONSTRUCTOR
@@ -37,7 +38,9 @@ contract PharmacyContract {
     //      FUNCTIONS
     ////////////////////////////////
 
-    function sendPrescriptionToHospital (uint _tokenID) public {
-        prescription.transferFrom(msg.sender, hospitalContractAddress, _tokenID);
+    // @param id de la recepta
+    // @dev funció per eliminar la recepta una vegada li han donat a la farmacia
+    function deletePrescription(uint _tokenID) public onlyOwner{
+        prescription.burnNFT(_tokenID);
     }
 }
