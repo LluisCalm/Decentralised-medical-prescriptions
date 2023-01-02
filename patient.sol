@@ -8,8 +8,9 @@ pragma solidity ^0.8.0;
 
 import "./hospital.sol";
 import "./prescription.sol";
+import "@openzeppelin/contracts@4.4.2/access/Ownable.sol";
 
-contract PatientContract {
+contract PatientContract is Ownable{
 
     ////////////////////////////////
     //      CONSTRUCTOR
@@ -19,12 +20,13 @@ contract PatientContract {
     PrescriptionNFT prescription;
     address prescriptionAddress;
 
+    uint prescriptionFee = 0.001 ether;
+
     // @param la direccio de l'adreça de l'hospital i la del token ERC721
     constructor(address _hospitalAddress, address _prescriptionAddress) public {
         hospital = Hospital(_hospitalAddress);
         prescription = PrescriptionNFT(_prescriptionAddress);
         prescriptionAddress = _prescriptionAddress;
-
     }
 
     ////////////////////////////////
@@ -45,9 +47,16 @@ contract PatientContract {
     // @dev envia la recepta a la farmàcia
     // @param direcció de la farmàcia i identificador del token
     // @notice s'ha de donar permís al contracte del token per gestionar aquesta recepta
-    function sendPrescription (address _pharmacyAddress, uint _tokenID) public toPharmacy(_pharmacyAddress){
+    function sendPrescription (address _pharmacyAddress, uint _tokenID) public toPharmacy(_pharmacyAddress) payable{
+        require(msg.value == prescriptionFee);
         prescription.transferPrescription(_tokenID, _pharmacyAddress);
         prescription.changeState(_tokenID, "used");
     }
+
+    // @dev Per modificar el cost d'un medicament
+    // @param uint el valor en eth
+    function setPrescriptionFee(uint _fee) external onlyOwner {
+        prescriptionFee = _fee;
+  }
     
 }

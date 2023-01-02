@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// @title  Contracte que defineix les farmàcies i tot el que poden fer dins el projecte de digitalitzar el sistema de receptres sanitàries 
+// @title Contracte pels pacients
 // @author Lluis Sánchez Calm
+// @notice S'encarrega de gestionar totes les accions que poden utilitzar els pacients
+
 
 import "./hospital.sol";
 import "./prescription.sol";
@@ -14,24 +16,11 @@ contract PharmacyContract is Ownable{
     //      CONSTRUCTOR
     ////////////////////////////////
 
-    Hospital hospital;
-    address hospitalContractAddress;
     PrescriptionNFT prescription;
 
-    constructor(address _hospitalAddress, address _prescriptionAddress) public {
-        hospitalContractAddress = _hospitalAddress;
-        hospital = Hospital(hospitalContractAddress);
+    constructor(address _prescriptionAddress) public {
         prescription = PrescriptionNFT(_prescriptionAddress);
 
-    }
-
-    ////////////////////////////////
-    //      MODIFIERS
-    ////////////////////////////////
-
-    modifier toHospital(address _address){
-        require(_address == hospitalContractAddress);
-        _;
     }
 
     ////////////////////////////////
@@ -43,4 +32,10 @@ contract PharmacyContract is Ownable{
     function deletePrescription(uint _tokenID) public onlyOwner{
         prescription.burnNFT(_tokenID);
     }
+
+    // @param addres to withdraw
+    function withdraw(address payable _destination) public onlyOwner {
+        _destination.transfer(address(this).balance);
+  }
+
 }
