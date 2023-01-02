@@ -181,12 +181,6 @@ contract Hospital is Ownable {
         id++;
     }
 
-    // @param id de la recepta
-    // @dev funció per eliminar la recepta una vegada la té l'hospital
-    function deletePrescription(uint _tokenID) public onlyOwner{
-        prescriptionNFT.burnNFT(_tokenID);
-    }
-
     ////////////////////////////////
     //  DEPLOY OTHER CONTRACTS
     ////////////////////////////////
