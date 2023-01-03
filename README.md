@@ -1,7 +1,7 @@
 # Decentralized system for medical prescriptions
 
 
-Project made for a college course. It consists of decentralizing the medical prescription system, each prescription is be an ERC721 token.
+Project made for a college course. It consists of decentralizing the medical prescription system, each prescription is an ERC721 token.
 
 ## How to use it
 
