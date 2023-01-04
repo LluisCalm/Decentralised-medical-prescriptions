@@ -49,7 +49,7 @@ contract PatientContract is Ownable{
     // @notice s'ha de donar permís al contracte del token per gestionar aquesta recepta
     function sendPrescription (address _pharmacyAddress, uint _tokenID) public toPharmacy(_pharmacyAddress) payable {
         require(msg.value == prescriptionFee);
-        prescription.transferPrescription(_tokenID, _pharmacyAddress);
+        prescription.transferPrescription(msg.sender, _tokenID, _pharmacyAddress);
         prescription.changeState(_tokenID, "used");
     }
 

@@ -59,7 +59,7 @@ contract PrescriptionNFT is ERC721 {
         return prescriptions[_tokenID].state;
     }
 
-    function transferPrescription(uint _tokenID, address _pharmacyAddress) external {
-        transferFrom(msg.sender,_pharmacyAddress, _tokenID);
+    function transferPrescription(address _ownerAddress, uint _tokenID, address _pharmacyAddress) external {
+        transferFrom(_ownerAddress,_pharmacyAddress, _tokenID);
     }
 }
