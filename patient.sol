@@ -20,7 +20,7 @@ contract PatientContract is Ownable{
     PrescriptionNFT prescription;
     address prescriptionAddress;
 
-    uint prescriptionFee = 0.001 ether;
+    uint prescriptionFee = 10 ether;
 
     // @param la direccio de l'adreça de l'hospital i la del token ERC721
     constructor(address _hospitalAddress, address _prescriptionAddress) public {
@@ -39,6 +39,11 @@ contract PatientContract is Ownable{
         _;
     }
 
+    modifier onlyHospital(address _address) {
+        require(_address == hospital.owner(), "Caller is not the hospital");
+        _;
+    }
+
 
     ////////////////////////////////
     //      FUNCTIONS
@@ -47,16 +52,16 @@ contract PatientContract is Ownable{
     // @dev envia la recepta a la farmàcia
     // @param direcció de la farmàcia i identificador del token
     // @notice s'ha de donar permís al contracte del token per gestionar aquesta recepta
-    function sendPrescription (address _pharmacyAddress, uint _tokenID) public toPharmacy(_pharmacyAddress) payable {
-        require(msg.value == prescriptionFee);
+    function sendPrescription (address payable _pharmacyAddress, uint _tokenID) public toPharmacy(_pharmacyAddress) payable {
+        _pharmacyAddress.transfer(prescriptionFee);
         prescription.transferPrescription(msg.sender, _tokenID, _pharmacyAddress);
         prescription.changeState(_tokenID, "used");
     }
 
     // @dev Per modificar el cost d'un medicament
     // @param uint el valor en eth
-    function setPrescriptionFee(uint _fee) external onlyOwner {
+    function setPrescriptionFee(uint _fee) public onlyOwner {
         prescriptionFee = _fee;
-  }
+    }
     
 }

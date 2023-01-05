@@ -17,11 +17,23 @@ contract PharmacyContract is Ownable{
     ////////////////////////////////
 
     PrescriptionNFT prescription;
+    Hospital hospital;
 
-    constructor(address _prescriptionAddress) public {
+    constructor(address _prescriptionAddress, address _hospitalAddress) public {
         prescription = PrescriptionNFT(_prescriptionAddress);
+        hospital = Hospital(_hospitalAddress);
 
     }
+
+    ////////////////////////////////
+    //      MODIFIER
+    ////////////////////////////////
+
+    modifier onlyPharmacy (address _address){
+        require(hospital.isPharmacy(_address));
+        _;
+    }
+
 
     ////////////////////////////////
     //      FUNCTIONS
@@ -29,13 +41,8 @@ contract PharmacyContract is Ownable{
 
     // @param id de la recepta
     // @dev funció per eliminar la recepta una vegada li han donat a la farmacia
-    function deletePrescription(uint _tokenID) public onlyOwner{
+    function deletePrescription(uint _tokenID) public onlyPharmacy(msg.sender) {
         prescription.burnNFT(_tokenID);
     }
-
-    // @param addres to withdraw
-    function withdraw(address payable _destination) public onlyOwner {
-        _destination.transfer(address(this).balance);
-  }
 
 }

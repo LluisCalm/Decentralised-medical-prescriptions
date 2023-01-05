@@ -26,6 +26,7 @@ contract Hospital is Ownable {
     address patientsContractAddress;
     address pharmaciesContractAddress;
     address prescriptionContractAddress;
+    PatientContract patientContract;
     PrescriptionNFT prescriptionNFT;
 
     uint private id;
@@ -182,6 +183,10 @@ contract Hospital is Ownable {
         id++;
     }
 
+    function setPrescriptionFee(uint _fee) public onlyOwner{
+        patientContract.setPrescriptionFee(_fee);
+    }
+
     ////////////////////////////////
     //  DEPLOY OTHER CONTRACTS
     ////////////////////////////////
@@ -192,12 +197,13 @@ contract Hospital is Ownable {
     }
 
     function deployPatientContract() public onlyOwner returns (address){
-        patientsContractAddress = address (new PatientContract(hospitalContractAddress, prescriptionContractAddress));
+        patientContract = new PatientContract(hospitalContractAddress, prescriptionContractAddress);
+        patientsContractAddress = address (patientContract);
         return patientsContractAddress;
     }
 
     function deployPharmacyContract() public onlyOwner returns (address){
-        pharmaciesContractAddress = address (new PharmacyContract(prescriptionContractAddress));
+        pharmaciesContractAddress = address (new PharmacyContract(prescriptionContractAddress, hospitalContractAddress));
         return pharmaciesContractAddress;
     }
 
