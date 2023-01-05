@@ -36,9 +36,9 @@ contract PrescriptionNFT is ERC721 {
     Prescription[] public prescriptions;
 
 
-    ////////////////////////////////
+    /////////////////////////////////
     //      FUNCTIONS
-    ////////////////////////////////
+    /////////////////////////////////
 
     // @param direcció del pacient, id, direccio del metge, data de caducitat, IUM i nom
     // @dev funció per crear la recepta
