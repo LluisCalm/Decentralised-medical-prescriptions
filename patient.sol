@@ -20,7 +20,7 @@ contract PatientContract is Ownable{
     PrescriptionNFT prescription;
     address prescriptionAddress;
 
-    uint prescriptionFee = 10 ether;
+    uint prescriptionFee = 0.01 ether;
 
     // @param la direccio de l'adreça de l'hospital i la del token ERC721
     constructor(address _hospitalAddress, address _prescriptionAddress) public {
