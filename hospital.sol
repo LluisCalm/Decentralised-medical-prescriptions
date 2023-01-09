@@ -183,6 +183,8 @@ contract Hospital is Ownable {
         id++;
     }
 
+    // @param new fee
+    // @dev funció per actualitzar la tasa dels medicaments
     function setPrescriptionFee(uint _fee) public onlyOwner{
         patientContract.setPrescriptionFee(_fee);
     }
