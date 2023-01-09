@@ -35,7 +35,6 @@ contract PrescriptionNFT is ERC721 {
     // Array per a les prescripcions
     Prescription[] public prescriptions;
 
-
     ////////////////////////////////
     //      FUNCTIONS
     ////////////////////////////////
@@ -49,10 +48,6 @@ contract PrescriptionNFT is ERC721 {
 
     function burnNFT(uint _tokenID) public {
         _burn(_tokenID);
-    }
-
-    function changeState(uint _tokenID, string memory _state) public {
-        prescriptions[_tokenID].state = _state;
     }
 
     function getPrescriptionState(uint _tokenID) public view returns (string memory){
