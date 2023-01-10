@@ -12,4 +12,4 @@ To test this project I recommend using https://remix.ethereum.org/. To run this 
 * Use the functions from hospital.sol to deploy the other contracts
 * Deploy the other contracts at the address that the deploy function from hospital.sol gave to them
 
-To transfer a prescription, you must approve the prescription.sol address from the owner addres.
+To transfer a prescription, you must approve the patient.sol address from the owner addres.
