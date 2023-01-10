@@ -52,7 +52,6 @@ contract Hospital is Ownable {
         string name;
         address doctor_address;
         uint membership_number;
-        bool isValue;
     }
 
     // @dev Struct pels pacients
@@ -150,7 +149,7 @@ contract Hospital is Ownable {
     // @param nom, direccio, nombre de col·legiat
     // @dev funció per crear un doctor 
     function createDoctor(string memory _name, address _address, uint _membership_number) public onlyOwner {
-        doctors.push(Doctor(_name, _address, _membership_number, true));
+        doctors.push(Doctor(_name, _address, _membership_number));
         doctors_list[_address] = true;
         addressToDoctor[_address] = _name;
         emit doctorCreated(_address, _name);
