@@ -135,12 +135,6 @@ contract Hospital is Ownable {
         _;
     }
 
-    // @dev modificador que comprova que la direcció sigui la del contracte de pacients
-    modifier onlyFromPatientContract(address _address) {
-        require(_address == patientsContractAddress);
-        _;
-    }
-
 
     ////////////////////////////////
     //          FUNCTIONS
