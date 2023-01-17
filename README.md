@@ -1,4 +1,4 @@
-# Decentralized system for medical prescriptions
+# Decentralised system for medical prescriptions
 
 
 Project made for a college course. It consists of decentralizing the medical prescription system, each prescription is an ERC721 token.
