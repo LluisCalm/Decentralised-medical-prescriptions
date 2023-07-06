@@ -5,7 +5,7 @@ Project made for a college course. It consists of decentralizing the medical pre
 
 ## How to use it
 
-To test this project I recommend using https://remix.ethereum.org/, to run this project you should follow the following steps:
+To test this project I recommend using https://remix.ethereum.org/. To run this project you should follow the following steps:
 
 * Deploy prescription.sol
 * Deploy hospital.sol and give it the prescription.sol contract address
